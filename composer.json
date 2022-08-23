@@ -1,5 +1,5 @@
 {
-  "name": "pantheon-systems/wordpress-composer-managed",
+  "name": "pantheon-upstreams/decoupled-wordpress-composer-managed",
   "type": "project",
   "license": "MIT",
   "description": "Pantheon's recommended starting point for WordPress upstreams using the platform's Integrated Composer build process.",
@@ -57,6 +57,8 @@
     "roots/bedrock-autoloader": "*",
     "roots/bedrock-disallow-indexing": "*",
     "roots/wordpress": "*",
+    "wpackagist-plugin/wp-gatsby": "^2.0",
+    "pantheon-systems/pantheon-decoupled": "^1.0",
     "roots/wp-config": "*",
     "roots/wp-password-bcrypt": "*",
     "wpackagist-theme/twentytwentytwo": "^1.2",
