@@ -108,6 +108,10 @@
     "post-root-package-install": [
       "php -r \"copy('.env.example', '.env');\""
     ],
+    "post-install-cmd": [
+      "cd web; ln-s wp/* . || true",
+      "rm web/wp-settings.php"
+    ],
     "pre-update-cmd": [
         "WordPressComposerManaged\\ComposerScripts::preUpdate"
     ],
