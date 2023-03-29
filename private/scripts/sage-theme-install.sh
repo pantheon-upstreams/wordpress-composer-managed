@@ -76,6 +76,7 @@ function get_info() {
   if [ -z "$sagename" ]; then
     echo -e "${yellow}Enter your theme name.${normal}\nThis is used to create the theme directory. As such, it should ideally be all lowercase with no spaces (hyphens or underscores recommended)\n"
     read -p "Theme name: " -r sagename
+    confirmThemeName "$sagename"
   else
     echo -e "${green}Theme name: ${sagename}${normal}"
   fi
@@ -87,7 +88,7 @@ function get_info() {
   SFTP hostname: ${sftphost}"
   read -p "Is this correct? (y/n) " -n 1 -r
   # If the user enters n, redo the prompts.
-  if [[ $REPLY =~ ^[Nn]$ ]]; then
+  if [[ ! $REPLY =~ ^[Yy]$ ]]; then
     echo -e "\nRestarting...\n"
 
     # Toggle the restarted state.
@@ -103,6 +104,26 @@ function get_info() {
 
   # Set the theme directory. Do this at the end, after we know what everything should be.
   sagedir=$themedir/$sagename
+}
+
+# Confirm user-submitted theme-name and ensure letters are lower-space
+function confirmThemeName() {
+  # Replace spaces with dashes and convert to lowercase
+  echo "Validating theme name..."
+  sagename=$(echo "$sagename" | tr '[:space:]' '-' | tr '[:upper:]' '[:lower:]')
+
+  # Replace underscores with dashes
+  sagename=${sagename//_/\-}
+
+  # Remove double dashes
+  while [[ $sagename == *--* ]]; do
+    sagename=${sagename/--/-}
+  done
+
+  # Remove trailing dash (if present)
+  sagename=${sagename%-}
+
+  echo "Theme name is: $sagename"
 }
 
 # Use terminus whoami to check if the user is logged in and exit the script if they are not.
@@ -135,7 +156,23 @@ get_field() {
 # Update to PHP 8.0
 function update_php() {
   echo -e "\n\n${yellow}Updating PHP version to 8.0.${normal}"
-  sed -i '' "s/php_version: 7.4/php_version: 8.0/" pantheon.upstream.yml
+
+  # Testing for any version of PHP 8.x and/or PHP 7.4.
+  phpAlreadyVersion8=$(cat pantheon.yml | grep -c "php_version: 8.")
+  phpDeclaredInFile=$(cat pantheon.yml | grep -c "php_version: 7.4")
+  
+  # Only alter if not already PHP 8.x.
+  if [ "$phpAlreadyVersion8" -eq 0 ]; then
+    # Test for PHP version declartion already in pantheon.yml.
+    if [ ! "$phpDeclaredInFile" -eq 0 ]; then
+      # Update version to 8.x.
+      sed -i '' "s/7.4/8.0/" pantheon.yml
+    else
+      # Add full PHP version declaration to pantheon.yml.
+      echo "php_version: 8.0" >> pantheon.yml
+    fi
+  fi
+
   git commit -am "[Sage Install] Update PHP version to 8.0"
   git push origin master
 }
