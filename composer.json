@@ -63,6 +63,8 @@
     "pantheon-systems/pantheon-decoupled": "^1.0",
     "wpackagist-plugin/wp-gatsby": "^2.0",
     "pantheon-systems/pantheon-decoupled": "^1.0",
+    "wpackagist-plugin/wp-gatsby": "^2.0",
+    "pantheon-systems/pantheon-decoupled": "^1.0",
     "roots/wp-config": "*",
     "roots/wp-password-bcrypt": "*",
     "wpackagist-theme/twentytwentytwo": "^1.2",
@@ -120,7 +122,7 @@
       "php -r \"copy('.env.example', '.env');\""
     ],
     "post-install-cmd": [
-      "cd web; ln -sfn $(ls wp/* | grep -v 'index.php') . || true",
+      "cd web; ln -s wp/* . || true",
       "rm web/wp-settings.php"
     ],
     "pre-update-cmd": [
