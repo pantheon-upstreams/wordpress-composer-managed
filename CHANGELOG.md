@@ -1,3 +1,9 @@
+### 2024-04-15
+* Fixed an issue where `WP_HOME` was left undefined and throwing notices into New Relic logs. For more information, see our [release note](https://docs.pantheon.io/release-notes/2024/04/wordpress-composer-managed-update). ([#115](https://github.com/pantheon-systems/wordpress-composer-managed/pull/115))
+
+### 2023-09-25
+* Updates to the [Sage install script](docs/Installing-Sage.md) to support running the script without prompting for input. Also adds automated test runs of the script on `ubuntu-latest` and `macos-latest` environments. ([#113](https://github.com/pantheon-systems/wordpress-composer-managed/pull/113))
+
 ### 2023-06-27
 * Fixed a bug that failed to prevent a `composer.lock` file from being committed to the repository. ([#103](https://github.com/pantheon-systems/wordpress-composer-managed/pull/103))
 * Removed the `upstream-require` script ([#105](https://github.com/pantheon-systems/wordpress-composer-managed/pull/105)). This is now available as a standalone Composer plugin: [`pantheon-systems/upstream-management`](https://packagist.org/packages/pantheon-systems/upstream-management)

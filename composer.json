@@ -124,8 +124,16 @@
     "maybe-create-symlinks": [
       "bash ./private/scripts/helpers.sh maybe_create_symlinks"
     ],
-    "test": [
-      "phpcs"
+    "lint": [
+      "@lint:php",
+      "@lint:phpcs",
+      "@lint:bash"
+    ],
+    "lint:php": [
+      "php -l web/wp/wp-settings.php"
+    ],
+    "lint:phpcs": [
+      "vendor/bin/phpcs -s ."
     ],
     "upstream-require": [
         "WordPressComposerManaged\\ComposerScripts::upstreamRequire"
