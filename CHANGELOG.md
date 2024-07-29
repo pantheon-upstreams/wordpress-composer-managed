@@ -1,4 +1,25 @@
-### 2024-06-04
+### v1.31.1 (2024-07-29)
+* Removes code that for handling wp-admin URLs. ([#143](https://github.com/pantheon-systems/wordpress-composer-managed/pull/143)) This code was not working as intended and testing revealed it to be unnecessary.
+* Adds a filter to disable the subdirectory multisite custom wp-content directory warning. ([#144](https://github.com/pantheon-systems/wordpress-composer-managed/pull/144)) This implements the filter added in the [Pantheon MU Plugin](https://github.com/pantheon-systems/pantheon-mu-plugin) in [#51](https://github.com/pantheon-systems/pantheon-mu-plugin/pull/51).
+
+### v1.31.0 (2024-07-10)
+* `wp-config-pantheon.php` deprecated in favor of `application.pantheon.php`. All previous functionality in `wp-config-pantheon.php` moved to `application.pantheon.php`. ([#139](https://github.com/pantheon-systems/wordpress-composer-managed/pull/139))
+* `DISABLE_WP_CRON` constant removed from `application.php` (and `wp-config-pantheon.php`) and moved to `application.pantheon.php`. ([#139](https://github.com/pantheon-systems/wordpress-composer-managed/pull/139)) It's possible this change could cause a merge conflict. Accept incoming changes from the upstream or [resolve manually](https://docs.pantheon.io/guides/git/resolve-merge-conflicts).
+* Cookie domain handling in `application.pantheon.php` to resolve cookie-related login redirect issues on subdomain multisites. ([#137](https://github.com/pantheon-systems/wordpress-composer-managed/pull/137))
+* Updates to `application.php` and `composer.json` to bring WordPress (Composer Managed) in line with [`roots/bedrock`](https://github.com/roots/bedrock) v1.24.x. ([#134](https://github.com/pantheon-systems/wordpress-composer-managed/pull/134))
+* Correct WordPress site urls on main sites or single sites to drop the `/wp` in WordPress-generated home links. ([#132](https://github.com/pantheon-systems/wordpress-composer-managed/pull/132)) This fixes an issue where WordPress-generated links to the primary site always included an unnecessary trailing `/wp`. This is handled by a filter in `mu-plugins/filters.php` set to priority `9` so it can be easily overridden.
+* Pre-set the WP GraphQL endpoint path to `wp/graphql` if the plugin exists to preserve existing functionality after URL filters above. ([#138](https://github.com/pantheon-systems/wordpress-composer-managed/pull/138))
+* Bump PHP version to 8.2 and DB version to 10.6. ([#133](https://github.com/pantheon-systems/wordpress-composer-managed/pull/133)) PHP back to 8.1 is still supported but PHP 8.0 support is dropped by the Composer configuration to follow current Bedrock and Sage minimum requirements.
+* Update the `update_php` function in `helpers.sh` to update PHP version in `pantheon.yml` to 8.1 (or higher) to follow new Bedrock and Sage PHP minimum. ([#131](https://github.com/pantheon-systems/wordpress-composer-managed/pull/131))
+* Silences the check for multisite in the Sage theme install script. ([#131](https://github.com/pantheon-systems/wordpress-composer-managed/pull/131)) Previously a warning would be shown if the site the script was being run against was not a multisite because the `MULTISITE` constant did not exist.
+* Adds a check to see if the generated Sage theme exists prior to theme activation. ([#131](https://github.com/pantheon-systems/wordpress-composer-managed/pull/131)) This change corrects the script's behavior to not attempt to activate the theme if it does not exist.
+* Ensure managed WordPress files aren't omitted. ([#128](https://github.com/pantheon-systems/wordpress-composer-managed/pull/128)) This fixes an issue where some required files were being ignored by version control. Props [@araphiel](https://github.com/araphiel)
+* Filters core resource URLs for non-main sites in subdirectory multisites. ([#130](https://github.com/pantheon-systems/wordpress-composer-managed/pull/130)) This fixes an issue where core resource URLs (e.g. to WordPress core JavaScript and CSS assets) were linked incorrectly in subdirectory subsites. This is handled by a filter in `mu-plugins/filters.php` set to priority `9` so it can be easily overridden.
+* Replace `tput` with a `save_tput` function in `helpers.sh`. ([#129](https://github.com/pantheon-systems/wordpress-composer-managed/pull/129)) This fixes an issue where a warning was being displayed in Workflow Logs in the dashboard because the `tput` function was not available in the terminal environment.
+* Adds semver versioning convention to CHANGELOG to track changes easier. (Tags will begin at 1.31.0 rather than retroactively creating new tags.)
+* Adds `package.json` file and [Playwright](https://playwright.dev/) tests for functional testing. ([#138](https://github.com/pantheon-systems/wordpress-composer-managed/pull/138))
+
+### v1.30.0 (2024-06-04)
 * Filters the configuration file filename on the Setup Network instructions page to use `config/application.php` instead of `wp-config.php`. ([#125](https://github.com/pantheon-systems/wordpress-composer-managed/pull/125))
 * Adds Composer script to update the `platform.php` value to the version of PHP consistent with the version in the `pantheon.yml` file. ([#127](https://github.com/pantheon-systems/wordpress-composer-managed/pull/127)
 
