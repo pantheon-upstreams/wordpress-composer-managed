@@ -9,10 +9,12 @@
  * License:      MIT License
  */
 
+namespace Pantheon\WordPressComposerManaged\Filters;
 
 /**
  * Update the multisite configuration to use Config::define() instead of define.
  *
+ * @since 1.0.0
  * @return string
  */
 add_filter( 'pantheon.multisite.config_contents', function ( $config_contents ) {
@@ -23,10 +25,11 @@ add_filter( 'pantheon.multisite.config_contents', function ( $config_contents ) 
 /**
  * Update the wp-config filename to use config/application.php.
  *
+ * @since 1.0.0
  * @return string
  */
 add_filter( 'pantheon.multisite.config_filename', function ( $config_filename ) {
-    return 'config/application.php';
+	return 'config/application.php';
 } );
 
 /**

@@ -1,10 +1,24 @@
 {
-  "name": "roots/bedrock",
+  "name": "pantheon-systems/wordpress-composer-managed",
   "type": "project",
   "license": "MIT",
-  "description": "WordPress boilerplate with Composer, easier configuration, and an improved folder structure",
-  "homepage": "https://roots.io/bedrock/",
+  "description": "Pantheon's recommended starting point for WordPress upstreams using the platform's Integrated Composer build process.",
+  "homepage": "https://pantheon.io/docs/guides/wordpress-composer",
   "authors": [
+    {
+      "name": "Pantheon Systems",
+      "homepage": "https://pantheon.io"
+    },
+    {
+      "name": "John Spellman",
+      "email": "john.spellman@pantheon.io",
+      "homepage": "https://github.com/jspellman814"
+    },
+    {
+      "name": "Chris Reynolds",
+      "email": "chris.reynolds@pantheon.io",
+      "homepage": "https://github.com/jazzsequence"
+    },
     {
       "name": "Scott Walkinshaw",
       "email": "scott.walkinshaw@gmail.com",
@@ -17,11 +31,11 @@
     }
   ],
   "keywords": [
-    "bedrock", "composer", "roots", "wordpress", "wp", "wp-config"
+    "bedrock", "composer", "roots", "wordpress", "wp", "wp-config", "pantheon"
   ],
   "support": {
-    "issues": "https://github.com/roots/bedrock/issues",
-    "forum": "https://discourse.roots.io/category/bedrock"
+    "issues": "https://github.com/pantheon-systems/wordpress-composer-managed/issues",
+    "docs": "https://pantheon.io/docs/guides/wordpress-composer"
   },
   "repositories": [
     {
@@ -76,6 +90,12 @@
       "web/app/themes/{$name}/": ["type:wordpress-theme"]
     },
     "wordpress-install-dir": "web/wp",
+    "build-env": {
+      "install-cms": [
+        "wp core install --title={site-name} --url={site-url} --admin_user={account-name} --admin_email={account-mail} --admin_password={account-pass}",
+        "wp option update permalink_structure '/%postname%/'"
+      ]
+    },
     "composer-scaffold": {
       "locations": {
         "web-root": "./"
@@ -90,9 +110,6 @@
       ]
   },
   "scripts": {
-    "post-root-package-install": [
-      "php -r \"copy('.env.example', '.env');\""
-    ],
     "post-install-cmd": "@maybe-create-symlinks",
     "pre-update-cmd": [
       "WordPressComposerManaged\\ComposerScripts::preUpdate"
@@ -103,14 +120,32 @@
     "maybe-create-symlinks": [
       "bash ./private/scripts/helpers.sh maybe_create_symlinks"
     ],
-    "test": [
-      "phpcs"
+    "lint": [
+      "@lint:php",
+      "@lint:phpcs",
+      "@lint:bash"
     ],
+    "lint:php": [
+      "php -l web/wp/wp-settings.php"
+    ],
+    "lint:phpcs": [
+      "vendor/bin/phpcs -s ."
+    ],
+    "lint:phpcbf": [
+      "vendor/bin/phpcbf ."
+    ],
+    "lint:bash": [
+      "shellcheck private/scripts/*.sh"
+    ],
+    "test": [],
     "upstream-require": [
         "WordPressComposerManaged\\ComposerScripts::upstreamRequire"
     ]
   },
   "scripts-descriptions": {
       "upstream-require": "Add a dependency to an upstream. See https://pantheon.io/docs/create-custom-upstream for information on creating custom upstreams."
+  },
+  "suggest": {
+    "pantheon-systems/upstream-management": "Composer plugin that provides commands for managing custom upstreams on Pantheon."
   }
 }
