@@ -28,37 +28,46 @@
       "type": "composer",
       "url": "https://wpackagist.org",
       "only": ["wpackagist-plugin/*", "wpackagist-theme/*"]
+    },
+    {
+        "type": "path",
+        "url": "upstream-configuration"
     }
   ],
   "require": {
     "php": ">=7.4",
-    "composer/installers": "^2.1",
-    "vlucas/phpdotenv": "^5.4",
+    "composer/installers": "^2.2",
+    "vlucas/phpdotenv": "^5.5",
     "oscarotero/env": "^2.1",
-    "roots/bedrock-autoloader": "^1.0",
-    "roots/bedrock-disallow-indexing": "^2.0",
-    "roots/wordpress": "6.0",
-    "roots/wp-config": "1.0.0",
-    "roots/wp-password-bcrypt": "1.1.0",
+    "roots/bedrock-autoloader": "*",
+    "roots/bedrock-disallow-indexing": "*",
+    "roots/wordpress": "*",
+    "roots/wp-config": "*",
+    "roots/wp-password-bcrypt": "*",
     "wpackagist-theme/twentytwentytwo": "^1.2",
-    "pantheon-systems/wordpress-bedrock-integrations": "dev-two-point-zero-point-zero",
-    "drupal/core-composer-scaffold": "^9.4",
-    "pantheon-systems/pantheon-mu-plugin": "^1.0"
+    "pantheon-systems/pantheon-mu-plugin": "*",
+    "pantheon-upstreams/upstream-configuration": "dev-main",
+    "wpackagist-plugin/pantheon-advanced-page-cache": "*",
+    "wpackagist-plugin/wp-native-php-sessions": "*",
+    "cweagans/composer-patches": "^1.7"
   },
   "require-dev": {
-    "squizlabs/php_codesniffer": "^3.6.2",
-    "roave/security-advisories": "dev-latest"
+    "pantheon-systems/pantheon-wp-coding-standards": "*",
+    "roave/security-advisories": "dev-latest",
+    "assertwell/shellcheck": "^1.0"
   },
   "config": {
     "optimize-autoloader": true,
     "preferred-install": "dist",
+    "process-timeout": 0,
     "allow-plugins": {
       "composer/installers": true,
       "roots/wordpress-core-installer": true,
-      "drupal/core-composer-scaffold": true
+      "cweagans/composer-patches": true,
+      "dealerdirect/phpcodesniffer-composer-installer": true
     }
   },
-  "minimum-stability": "dev",
+  "minimum-stability": "stable",
   "prefer-stable": true,
   "extra": {
     "installer-paths": {
@@ -67,21 +76,41 @@
       "web/app/themes/{$name}/": ["type:wordpress-theme"]
     },
     "wordpress-install-dir": "web/wp",
-    "drupal-scaffold": {
-      "allowed-packages": [
-        "pantheon-systems/wordpress-bedrock-integrations"
-      ],
+    "composer-scaffold": {
       "locations": {
         "web-root": "./"
       }
-    }
+    },
+    "composer-exit-on-patch-failure": true,
+    "enable-patching": true
+  },
+  "autoload": {
+      "classmap": [
+          "upstream-configuration/scripts/ComposerScripts.php"
+      ]
   },
   "scripts": {
     "post-root-package-install": [
       "php -r \"copy('.env.example', '.env');\""
     ],
+    "post-install-cmd": "@maybe-create-symlinks",
+    "pre-update-cmd": [
+      "WordPressComposerManaged\\ComposerScripts::preUpdate"
+    ],
+    "install-sage": [
+      "bash ./private/scripts/helpers.sh install_sage"
+    ],
+    "maybe-create-symlinks": [
+      "bash ./private/scripts/helpers.sh maybe_create_symlinks"
+    ],
     "test": [
       "phpcs"
+    ],
+    "upstream-require": [
+        "WordPressComposerManaged\\ComposerScripts::upstreamRequire"
     ]
+  },
+  "scripts-descriptions": {
+      "upstream-require": "Add a dependency to an upstream. See https://pantheon.io/docs/create-custom-upstream for information on creating custom upstreams."
   }
 }
