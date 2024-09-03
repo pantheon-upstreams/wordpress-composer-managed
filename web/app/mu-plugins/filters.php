@@ -3,7 +3,7 @@
  * Plugin Name: Pantheon WordPress Filters
  * Plugin URI:   https://github.com/pantheon-systems/wordpress-composer-managed
  * Description:  Filters for Composer-managed WordPress sites on Pantheon.
- * Version:      1.2.1
+ * Version:      1.2.2
  * Author:       Pantheon Systems
  * Author URI:   https://pantheon.io/
  * License:      MIT License
@@ -162,7 +162,7 @@ function adjust_main_site_urls( string $url ) : string {
 	}
 
 	// If this is the main site, drop the /wp.
-	if ( is_main_site() ) {
+	if ( is_main_site() && is_multisite() ) {
 		$url = str_replace( '/wp/', '/', $url );
 	}
 
