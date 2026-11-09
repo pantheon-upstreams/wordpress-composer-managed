@@ -24,7 +24,7 @@
         "wpackagist-plugin/content-views-query-and-display-post-page": ">=4.5.1.2",
         "wpackagist-plugin/duplicate-page": "^4.5.9",
         "wpackagist-plugin/duracelltomi-google-tag-manager": "^2.0.3",
-        "wpackagist-plugin/enable-media-replace": "4.2.2",
+        "wpackagist-plugin/enable-media-replace": "4.2.3",
         "wpackagist-plugin/filebird": "^6.5.8",
         "wpackagist-plugin/font-awesome": "^5.2.1",
         "wpackagist-plugin/gdpr-cookie-compliance": "^5.1.0",
